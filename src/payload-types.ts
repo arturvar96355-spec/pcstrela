@@ -490,7 +490,7 @@ export interface Project {
    * Заполняется автоматически из названия. Меняйте только при необходимости: старые ссылки перестанут работать.
    */
   slug: string;
-  year: number;
+  year?: number | null;
   city: string;
   customerName?: string | null;
   /**

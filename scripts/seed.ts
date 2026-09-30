@@ -1,6 +1,8 @@
 // Начальные данные. Идемпотентен: существующие документы пропускаются.
 // Запуск: pnpm seed
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
+import fs from 'node:fs'
+import path from 'node:path'
 import config from '../src/payload.config'
 import { PAGE_SLUGS } from '../src/collections/Pages'
 
@@ -9,7 +11,7 @@ const ctx = { disableRevalidate: true }
 
 const log = (msg: string) => console.log(`[seed] ${msg}`)
 
-async function ensure(collection: 'directions' | 'categories' | 'pages', where: Record<string, unknown>, data: Record<string, unknown>) {
+async function ensure(collection: 'directions' | 'categories' | 'pages', where: Where, data: Record<string, unknown>) {
   const found = await payload.find({ collection, where, limit: 1, depth: 0, overrideAccess: true })
   if (found.docs[0]) return found.docs[0]
   log(`create ${collection}: ${JSON.stringify(where)}`)
@@ -31,6 +33,43 @@ if (adminEmail && adminPassword) {
       context: ctx,
     })
   }
+}
+
+// --- изображения из презентации заказчика ---
+const ASSETS = path.join(process.cwd(), 'scripts', 'seed-assets')
+const IMAGES: Record<string, string> = {
+  'maf-bench': 'Скамейка с деревянным сиденьем на стальном каркасе',
+  pergola: 'Навес с металлическим каркасом на площадке',
+  urn: 'Урна для раздельного сбора мусора',
+  facade: 'Здание с навесным вентилируемым фасадом',
+  'heat-unit-1': 'Модульный тепловой узел',
+  'heat-unit-2': 'Модульный тепловой узел на раме',
+  'noise-casing': 'Шумозащитный кожух для оборудования',
+  storage: 'Металлическая система хранения',
+  fence: 'Декоративное металлическое ограждение',
+  laser: 'Станок лазерной резки листового металла',
+  press: 'Гидравлический листогибочный пресс',
+  paint: 'Камера порошковой полимерной окраски',
+}
+const media: Record<string, string> = {}
+for (const [name, alt] of Object.entries(IMAGES)) {
+  const found = await payload.find({ collection: 'media', where: { alt: { equals: alt } }, limit: 1, depth: 0, overrideAccess: true })
+  if (found.docs[0]) {
+    media[name] = found.docs[0].id as string
+    continue
+  }
+  const file = path.join(ASSETS, `${name}.jpg`)
+  if (!fs.existsSync(file)) continue
+  log(`upload media ${name}`)
+  const buf = fs.readFileSync(file)
+  const doc = await payload.create({
+    collection: 'media',
+    data: { alt },
+    file: { data: buf, mimetype: 'image/jpeg', name: `${name}.jpg`, size: buf.length },
+    overrideAccess: true,
+    context: ctx,
+  })
+  media[name] = doc.id as string
 }
 
 // --- направления ---
@@ -66,10 +105,22 @@ const DIRECTIONS = [
   },
 ] as const
 
+const COVERS: Record<string, string> = {
+  maf: 'maf-bench',
+  'ulichnaya-mebel': 'pergola',
+  'fasadnye-sistemy': 'facade',
+  'teplovye-uzly': 'heat-unit-1',
+  'shumozashchitnye-kozhuhi': 'noise-casing',
+  'proektirovanie-kotelnyh': 'heat-unit-2',
+}
 const dir: Record<string, string> = {}
 for (const d of DIRECTIONS) {
   const doc = await ensure('directions', { slug: { equals: d.slug } }, d)
   dir[d.slug] = doc.id as string
+  const cover = media[COVERS[d.slug]]
+  if (cover && !doc.cover) {
+    await payload.update({ collection: 'directions', id: doc.id, data: { cover }, overrideAccess: true, context: ctx })
+  }
 }
 
 // --- категории и наборы характеристик ---
@@ -148,6 +199,8 @@ if (!home.heroTitle) {
     overrideAccess: true,
     context: ctx,
     data: {
+      heroImage: media.facade,
+      productionImages: [media.laser, media.press, media.paint].filter(Boolean),
       heroTitle: 'Металлоконструкции, МАФ и инженерные системы от производителя',
       heroSubtitle:
         'Собственное производство: лазерная резка, гибка, сварка и порошковая окраска. Фасады, противопожарные двери, малые архитектурные формы, тепловые узлы.',
@@ -165,6 +218,28 @@ if (!home.heroTitle) {
         { title: 'Поставка', text: 'Доставляем и при необходимости монтируем.' },
       ],
     },
+  })
+}
+
+// фото главной (для уже созданной главной)
+if (home.heroTitle && !home.heroImage && media.facade) {
+  await payload.updateGlobal({
+    slug: 'home-page',
+    overrideAccess: true,
+    context: ctx,
+    data: { heroImage: media.facade, productionImages: [media.laser, media.press, media.paint].filter(Boolean) },
+  })
+}
+
+// фото на странице «Производство»
+const prod = await payload.find({ collection: 'pages', where: { slug: { equals: 'proizvodstvo' } }, limit: 1, depth: 0, overrideAccess: true })
+if (prod.docs[0] && !(prod.docs[0].gallery ?? []).length) {
+  await payload.update({
+    collection: 'pages',
+    id: prod.docs[0].id,
+    data: { gallery: [media.laser, media.press, media.paint].filter(Boolean) },
+    overrideAccess: true,
+    context: ctx,
   })
 }
 

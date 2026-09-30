@@ -29,10 +29,9 @@ export const Projects: CollectionConfig = {
           name: 'year',
           label: 'Год',
           type: 'number',
-          required: true,
           index: true,
           validate: (v: unknown) =>
-            typeof v === 'number' && v >= 2000 && v <= new Date().getFullYear() + 1
+            v == null || (typeof v === 'number' && v >= 2000 && v <= new Date().getFullYear() + 1)
               ? true
               : 'Год от 2000 до следующего года',
         },
