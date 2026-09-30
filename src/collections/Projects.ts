@@ -52,9 +52,8 @@ export const Projects: CollectionConfig = {
       type: 'relationship',
       relationTo: 'directions',
       hasMany: true,
-      required: true,
-      minRows: 1,
       index: true,
+      admin: { description: 'Можно оставить пустым у черновика, но перед публикацией выберите направление' },
     },
     {
       name: 'products',
