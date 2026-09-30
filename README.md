@@ -2,7 +2,20 @@
 
 Next.js 16 + Payload CMS 3 (админка `/admin`) + PostgreSQL 16. Подробное ТЗ: `docs/SPEC.md`, принятые решения и отличия от ТЗ: `docs/DECISIONS.md`, запуск на сервере и передача заказчику: `docs/SETUP.md`.
 
-## Локальный запуск
+## Быстрый запуск одной командой
+
+Нужны Git, Node.js 22 и Docker Desktop (запущенный). На Windows запускайте в Git Bash или WSL.
+
+```
+git clone https://github.com/arturvar96355-spec/pcstrela.git
+cd pcstrela
+git checkout claude/new-session-lp9lw3
+bash scripts/local-start.sh
+```
+
+Скрипт сам создаст настройки, поднимет базу, загрузит данные и запустит сайт. Когда увидите рамку с адресами, откройте http://localhost:3000. Админка: http://localhost:3000/admin, вход `admin@localhost.local` / `admin-local-12345`. Остановить: Ctrl+C. Повторный запуск той же командой занимает несколько секунд.
+
+## Локальный запуск вручную
 
 1. Нужны Node.js 22, pnpm и PostgreSQL 16.
 2. База: `docker compose -f docker-compose.dev.yml up -d` (или свой PostgreSQL с пользователем `site`, паролем `site_dev`, базой `site`).

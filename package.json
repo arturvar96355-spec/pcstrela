@@ -16,7 +16,8 @@
     "generate:types": "payload generate:types",
     "seed": "tsx --env-file-if-exists=.env scripts/seed.ts",
     "watermark": "tsx --env-file-if-exists=.env scripts/make-watermark.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "local": "bash scripts/local-start.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
