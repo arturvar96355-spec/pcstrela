@@ -76,16 +76,13 @@ function SearchDialog({ open, onClose }: { open: boolean; onClose: () => void })
 
   useEffect(() => {
     const t = q.trim()
-    if (t.length < 2) {
-      setHits(null)
-      setLoading(false)
-      return
-    }
+    if (t.length < 2) return
     const timer = setTimeout(() => run(t), 300)
     return () => clearTimeout(timer)
   }, [q, run])
 
-  const flat = hits ?? []
+  const tooShort = q.trim().length < 2
+  const flat = tooShort ? [] : (hits ?? [])
   const go = (url: string) => {
     onClose()
     router.push(url)
@@ -118,7 +115,7 @@ function SearchDialog({ open, onClose }: { open: boolean; onClose: () => void })
       />
       <div className="mt-3 min-h-16">
         {q.trim().length > 0 && q.trim().length < 2 ? <p className="text-sm text-muted-fg">Введите минимум 2 символа</p> : null}
-        {loading ? (
+        {tooShort ? null : loading ? (
           <div className="space-y-2">
             <Skeleton className="h-10" />
             <Skeleton className="h-10" />

@@ -15,7 +15,7 @@ export function Metrika({ id }: { id?: string | null }) {
       }
       const counter = Number(id)
       window.__ymId = counter
-      /* eslint-disable */
+       
       ;(function (m: any, e: Document, t: string, r: string, i: string) {
         m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }
         m[i].l = Date.now()
@@ -25,7 +25,7 @@ export function Metrika({ id }: { id?: string | null }) {
         k.src = r
         a.parentNode!.insertBefore(k, a)
       })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym')
-      /* eslint-enable */
+       
       ;(window as unknown as { ym: (...a: unknown[]) => void }).ym(counter, 'init', {
         clickmap: true,
         trackLinks: true,

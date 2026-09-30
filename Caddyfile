@@ -1,0 +1,13 @@
+# Замените example.ru на ваш домен (единственное место, кроме .env)
+example.ru, www.example.ru {
+  @www host www.example.ru
+  redir @www https://example.ru{uri} permanent
+
+  encode zstd gzip
+  header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  request_body max_size 25MB
+
+  reverse_proxy app:3000 {
+    header_up X-Real-IP {remote_host}
+  }
+}

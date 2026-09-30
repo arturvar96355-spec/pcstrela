@@ -10,11 +10,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "eslint src scripts tests",
     "typecheck": "tsc --noEmit",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx --env-file-if-exists=.env scripts/seed.ts",
+    "watermark": "tsx --env-file-if-exists=.env scripts/make-watermark.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -45,13 +47,13 @@
     "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "eslint": "^10.11.0",
+    "eslint": "^9.39.5",
     "eslint-config-next": "^16.3.8",
     "playwright-core": "^1.63.0",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
+    "typescript": "^5.9.3",
     "vitest": "^5.0.3"
   },
   "pnpm": {

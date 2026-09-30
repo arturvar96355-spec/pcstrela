@@ -111,7 +111,7 @@ export function LeadForm(props: LeadFormProps) {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     resolver: zodResolver(leadSchema as any) as any,
     mode: 'onTouched',
     defaultValues: {

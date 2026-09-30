@@ -5,7 +5,7 @@ import { BadgeCheck, CalendarClock, Phone, Ruler, ShieldCheck, Weight } from 'lu
 import { getProductBySlugs, getProjectsByProduct, getSimilarProducts, getSiteSettings } from '@/lib/queries'
 import { absoluteUrl, buildMetadata } from '@/lib/seo'
 import { imageOf } from '@/lib/media'
-import { formatDimensions, formatProductionTime, formatWarranty, formatWeight, truncateWords } from '@/lib/format'
+import { formatDimensions, formatProductionTime, formatWarranty, formatWeight } from '@/lib/format'
 import { primaryPhone } from '@/lib/site'
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
 import { JsonLd } from '@/components/layout/json-ld'

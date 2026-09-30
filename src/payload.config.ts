@@ -19,6 +19,7 @@ import { Pages } from './collections/Pages'
 import { Leads } from './collections/Leads'
 import { SiteSettings } from './globals/SiteSettings'
 import { HomePage } from './globals/HomePage'
+import { migrations } from './migrations'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 const smtpConfigured = Boolean(process.env.SMTP_USER && process.env.SMTP_PASS)
@@ -35,6 +36,8 @@ export default buildConfig({
     idType: 'uuid',
     pool: { connectionString: process.env.DATABASE_URI ?? '' },
     migrationDir: path.resolve(process.cwd(), 'src/migrations'),
+    // на сервере миграции применяются автоматически при старте приложения
+    prodMigrations: migrations,
     // локально схема подтягивается автоматически, на сервере — только миграциями
     push: process.env.NODE_ENV !== 'production',
   }),

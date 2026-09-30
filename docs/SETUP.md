@@ -86,11 +86,14 @@
    - `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — из шага 3;
    - `TELEGRAM_BOT_TOKEN` — из шага 4;
    - `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` — ваш вход в админку, пароль от 16 символов.
+   - `SEED_COMPANY_EMAIL`, `SEED_NOTIFY_EMAIL` — почта компании и почта для заявок.
+   - `DATABASE_URI` в `.env` не нужен: compose собирает его из `POSTGRES_PASSWORD`.
 5. Ограничьте права: `chmod 600 .env`.
 6. В `Caddyfile` замените `example-zavod.ru` на ваш домен.
-7. Запустите: `docker compose up -d --build`.
-8. Проверьте: `docker compose ps` (все сервисы Up) и откройте `https://<домен>/api/public/health`. Должен вернуться `status: ok`.
-9. Если сайт не открылся, смотрите логи: `docker compose logs app --tail 100`.
+7. Запустите: `docker compose up -d --build`. Миграции базы применяются сами при старте приложения.
+8. Загрузите начальные данные (разово): `docker compose --profile tools run --rm --build seed`. Команду можно повторять: существующие данные она не перезаписывает.
+9. Проверьте: `docker compose ps` (все сервисы Up) и откройте `https://<домен>/api/public/health`. Должен вернуться `status: ok`.
+10. Если сайт не открылся, смотрите логи: `docker compose logs app --tail 100`.
 
 ## 7. Первая настройка в админке
 
@@ -103,10 +106,10 @@
 
 ## 8. Резервные копии
 
-1. Проверьте скрипт: `bash /opt/site/scripts/backup.sh`. В `/opt/backups` появятся два файла.
-2. Добавьте в cron: `crontab -e`, строка `0 3 * * * bash /opt/site/scripts/backup.sh`.
+1. Проверьте скрипт: `bash /opt/site/scripts/backup.sh`. В `/opt/backups` появятся два файла. Копии хранятся на сервере 14 дней.
+2. Добавьте в cron: `crontab -e`, строка `0 3 * * * bash /opt/site/scripts/backup.sh >> /var/log/site-backup.log 2>&1`.
 3. Один раз проверьте восстановление дампа в отдельную базу (команды в `scripts/backup.sh`, раздел в конце).
-4. Раз в месяц скачивайте свежий архив на свой компьютер.
+4. Раз в месяц скачивайте свежий архив на свой компьютер: копии на том же сервере не спасут, если сервер будет потерян.
 
 ## 9. Обновление сайта
 

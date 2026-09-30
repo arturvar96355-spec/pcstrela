@@ -15,7 +15,7 @@ async function ensure(collection: 'directions' | 'categories' | 'pages', where: 
   const found = await payload.find({ collection, where, limit: 1, depth: 0, overrideAccess: true })
   if (found.docs[0]) return found.docs[0]
   log(`create ${collection}: ${JSON.stringify(where)}`)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   return payload.create({ collection, data: data as any, overrideAccess: true, context: ctx })
 }
 

@@ -10,11 +10,14 @@ export function CookieBanner() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    try {
-      setShow(!localStorage.getItem(COOKIE_KEY))
-    } catch {
-      setShow(false)
-    }
+    const t = setTimeout(() => {
+      try {
+        setShow(!localStorage.getItem(COOKIE_KEY))
+      } catch {
+        setShow(false)
+      }
+    }, 0)
+    return () => clearTimeout(t)
   }, [])
 
   if (!show) return null

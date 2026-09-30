@@ -1,5 +1,4 @@
 import 'server-only'
-import type { Lead, Product, Direction } from '@/payload-types'
 import { getPayloadClient } from '../payload'
 import { sendEmail } from './email'
 import { sendTelegram } from './telegram'
