@@ -21,35 +21,9 @@ fi
 # 3. файл настроек .env (создаётся один раз)
 node scripts/make-env.mjs
 
-# 4. база данных: если на порту 5432 уже кто-то отвечает — используем её, иначе поднимаем через Docker
-db_up() { node scripts/db-up.mjs; }
-if ! db_up; then
-  command -v docker >/dev/null || die "Не найден Docker. Установите Docker Desktop (https://www.docker.com/products/docker-desktop), запустите его и повторите."
-  docker info >/dev/null 2>&1 || die "Docker установлен, но не запущен. Откройте Docker Desktop, дождитесь зелёного значка и повторите."
-  say "Запускаю базу данных"
-  docker compose -f docker-compose.dev.yml up -d
-  for i in $(seq 1 60); do db_up && break; sleep 1; done
-  db_up || die "База данных не запустилась за 60 секунд. Посмотрите: docker compose -f docker-compose.dev.yml logs"
-  sleep 3
-fi
-
-# 5. зависимости, водяной знак, начальные данные
+# 4. зависимости
 say "Устанавливаю зависимости (первый раз — несколько минут)"
 pnpm install
-say "Создаю водяной знак"
-pnpm watermark
-say "Загружаю начальные данные и фото"
-pnpm seed
 
-[ "${NO_DEV:-}" = "1" ] && { say "Готово (режим NO_DEV)"; exit 0; }
-
-cat <<'MSG'
-
-================================================================
-  Сайт:     http://localhost:3000
-  Админка:  http://localhost:3000/admin
-  Вход:     admin@localhost.local  /  admin-local-12345
-  Остановить: Ctrl+C
-================================================================
-MSG
-exec pnpm dev
+# 5. база (своя, Docker или встроенная), данные и запуск сайта
+exec node scripts/local-run.mjs
