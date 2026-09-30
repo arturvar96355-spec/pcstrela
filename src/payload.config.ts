@@ -27,9 +27,10 @@ const smtpConfigured = Boolean(process.env.SMTP_USER && process.env.SMTP_PASS)
 export default buildConfig({
   serverURL: SITE,
   secret: process.env.PAYLOAD_SECRET ?? '',
-  admin: { user: Users.slug, meta: { titleSuffix: ' — управление сайтом' } },
+  admin: { user: Users.slug, avatar: 'default', meta: { titleSuffix: ' — управление сайтом' } },
   i18n: { supportedLanguages: { ru }, fallbackLanguage: 'ru' },
-  collections: [Users, Media, ProductImages, Files, Directions, Categories, Products, Projects, Documents, Pages, Leads],
+  // порядок задаёт порядок групп в меню админки: Заявки, Каталог, Контент, Медиа, Система
+  collections: [Leads, Directions, Categories, Products, Projects, Documents, Pages, Media, ProductImages, Files, Users],
   globals: [SiteSettings, HomePage],
   editor: lexicalEditor(),
   db: postgresAdapter({

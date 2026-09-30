@@ -18,15 +18,16 @@ export const slugify = (input: string): string =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 80)
 
+// source — одно поле или несколько (для товара: название + артикул, чтобы slug не повторялся)
 const formatSlug =
-  (source: string): FieldHook =>
+  (source: string | string[]): FieldHook =>
   ({ value, data }) => {
     if (typeof value === 'string' && value.trim() !== '') return slugify(value)
-    const src = data?.[source]
-    return typeof src === 'string' ? slugify(src) : value
+    const parts = [source].flat().map((k) => data?.[k]).filter((v): v is string => typeof v === 'string' && v !== '')
+    return parts.length ? slugify(parts.join(' ')) : value
   }
 
-export const slugField = (source = 'title'): Field => ({
+export const slugField = (source: string | string[] = 'title'): Field => ({
   name: 'slug',
   label: 'Адрес страницы (slug)',
   type: 'text',

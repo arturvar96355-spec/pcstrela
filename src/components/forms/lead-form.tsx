@@ -133,6 +133,11 @@ export function LeadForm(props: LeadFormProps) {
     },
   })
 
+  // адрес страницы нужен и клиентской валидации, и серверу
+  useEffect(() => {
+    setValue('sourceUrl', window.location.href)
+  }, [setValue])
+
   // восстановление черновика
   useEffect(() => {
     try {
@@ -170,9 +175,22 @@ export function LeadForm(props: LeadFormProps) {
     }
   }, [watch, draftKey])
 
+  const visibleFields: Record<string, true> = {
+    name: true,
+    phone: true,
+    organization: true,
+    message: true,
+    consent: true,
+    ...(type !== 'callback' ? { email: true, inn: true, region: true } : {}),
+    ...(type === 'calculation' && !direction ? { directionId: true } : {}),
+    ...(type === 'quote' && product && !productGone ? { quantity: true } : {}),
+  }
+
   const onInvalid = (errs: FieldErrors<FormValues>) => {
     const first = Object.keys(errs)[0] as keyof FormValues | undefined
     if (first) setFocus(first)
+    // ошибка в поле, которого нет на экране, не должна пройти молча
+    setServerError(first && !(first in visibleFields) ? 'Проверьте заполненные поля и попробуйте ещё раз' : null)
   }
 
   const onSubmit = async (values: FormValues) => {

@@ -45,3 +45,10 @@ describe('leadSchema', () => {
     expect(leadSchema.safeParse({ ...base, message: 'а'.repeat(2001) }).success).toBe(false)
   })
 })
+
+describe('leadSchema: пустые значения формы', () => {
+  it('пустые productId и directionId считаются не переданными', () => {
+    const r = leadSchema.safeParse({ ...base, productId: '', directionId: '', email: '', inn: '', quantity: '' })
+    expect(r.success).toBe(true)
+  })
+})

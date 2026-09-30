@@ -1,6 +1,9 @@
 import { z } from 'zod'
 import { isValidInn, normalizeRuPhone } from './validators'
 
+// пустая строка из формы (например, невыбранный select) равна «не передано»
+const optUuid = z.preprocess((v) => (v === '' ? undefined : v), z.string().uuid().optional())
+
 const optText = (max: number) =>
   z
     .string()
@@ -29,8 +32,8 @@ export const leadSchema = z
     organization: optText(150),
     inn: optText(12).refine((v) => !v || isValidInn(v), 'Неверный ИНН'),
     region: optText(100),
-    productId: z.string().uuid().optional(),
-    directionId: z.string().uuid().optional(),
+    productId: optUuid,
+    directionId: optUuid,
     quantity: z
       .union([z.literal(''), z.coerce.number().int('Целое число').min(1, 'Минимум 1').max(100000, 'Не больше 100 000')])
       .optional()

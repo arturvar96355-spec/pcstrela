@@ -29,7 +29,7 @@ export const Products: CollectionConfig = {
   },
   fields: [
     { name: 'title', label: 'Название', type: 'text', required: true, maxLength: 120 },
-    slugField(),
+    slugField(['title', 'sku']),
     {
       name: 'sku',
       label: 'Артикул',

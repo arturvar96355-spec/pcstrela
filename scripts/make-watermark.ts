@@ -13,3 +13,12 @@ const out = path.join(process.cwd(), 'public', 'watermark.png')
 fs.mkdirSync(path.dirname(out), { recursive: true })
 await sharp(Buffer.from(svg)).png().toFile(out)
 console.log('watermark written:', out)
+
+// картинка для превью ссылок в соцсетях и мессенджерах
+const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <rect width="1200" height="630" fill="#111"/>
+  <text x="80" y="340" font-family="DejaVu Sans, Arial, sans-serif" font-weight="700" font-size="96" fill="#fff">${text}</text>
+  <text x="80" y="420" font-family="DejaVu Sans, Arial, sans-serif" font-size="36" fill="#bbb">Металлоконструкции, МАФ и инженерные системы</text>
+</svg>`
+await sharp(Buffer.from(og)).png().toFile(path.join(process.cwd(), 'public', 'og-default.png'))
+console.log('og-default written')

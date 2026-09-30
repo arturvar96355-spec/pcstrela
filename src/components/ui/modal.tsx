@@ -38,10 +38,10 @@ export function Modal({
         if (e.target === ref.current) onClose()
       }}
       className={cn(
-        'm-0 max-h-none w-full max-w-none bg-bg p-0 text-fg backdrop:bg-black/50',
+        'm-0 w-full max-w-none bg-bg p-0 text-fg backdrop:bg-black/50',
         side
           ? 'fixed inset-y-0 right-0 left-auto h-full max-w-sm overflow-y-auto'
-          : 'fixed inset-x-0 top-auto bottom-0 max-h-[92vh] overflow-y-auto rounded-t-[8px] md:inset-auto md:top-1/2 md:left-1/2 md:max-w-[560px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[4px]',
+          : 'fixed inset-x-0 top-auto bottom-0 max-h-[92dvh] overflow-y-auto rounded-t-[8px] md:inset-auto md:top-1/2 md:left-1/2 md:max-w-[560px] md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-[4px]',
         className,
       )}
     >

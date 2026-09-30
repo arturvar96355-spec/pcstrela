@@ -1,9 +1,12 @@
 import type { NextConfig } from 'next'
 import { withPayload } from '@payloadcms/next/withPayload'
 
+const dev = process.env.NODE_ENV !== 'production'
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://mc.yandex.ru",
+  // 'unsafe-eval' нужен только режиму разработки React
+  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ''} https://mc.yandex.ru`,
   "img-src 'self' data: blob: https://mc.yandex.ru",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
