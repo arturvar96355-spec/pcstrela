@@ -4,7 +4,18 @@ Next.js 16 + Payload CMS 3 (админка `/admin`) + PostgreSQL 16. Подро
 
 ## Быстрый запуск одной командой
 
-Нужны Git, Node.js 22 и Docker Desktop (запущенный). На Windows запускайте в Git Bash или WSL.
+Нужны Git, Node.js 22+ и Docker Desktop (запущенный).
+
+**Windows (PowerShell):** `winget install Git.Git`, `winget install OpenJS.NodeJS.LTS`, `winget install Docker.DockerDesktop`, затем откройте НОВОЕ окно PowerShell, запустите Docker Desktop и выполните:
+
+```
+git clone https://github.com/arturvar96355-spec/pcstrela.git
+cd pcstrela
+git checkout claude/new-session-lp9lw3
+.\start.bat
+```
+
+**Mac / Linux:**
 
 ```
 git clone https://github.com/arturvar96355-spec/pcstrela.git

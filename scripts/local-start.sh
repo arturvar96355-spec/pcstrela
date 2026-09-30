@@ -19,31 +19,10 @@ if ! command -v pnpm >/dev/null; then
 fi
 
 # 3. файл настроек .env (создаётся один раз)
-if [ ! -f .env ]; then
-  say "Создаю .env для локальной работы"
-  SECRET=$(node -p 'require("crypto").randomBytes(32).toString("hex")')
-  cat > .env <<ENV
-NODE_ENV=development
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-NEXT_PUBLIC_COMPANY_SHORT=ПК Стрела
-PAYLOAD_SECRET=$SECRET
-DATABASE_URI=postgres://site:site_dev@127.0.0.1:5432/site
-SMTP_USER=
-SMTP_PASS=
-SMTP_FROM=noreply@localhost
-SMTP_FROM_NAME=Сайт ПК Стрела
-TELEGRAM_BOT_TOKEN=
-WATERMARK_TEXT=ПК Стрела
-SEED_ADMIN_EMAIL=admin@localhost.local
-SEED_ADMIN_PASSWORD=admin-local-12345
-SEED_COMPANY_NAME=ООО «ПК Стрела»
-SEED_COMPANY_EMAIL=
-SEED_NOTIFY_EMAIL=
-ENV
-fi
+node scripts/make-env.mjs
 
 # 4. база данных: если на порту 5432 уже кто-то отвечает — используем её, иначе поднимаем через Docker
-db_up() { node -e 'const s=require("net").connect(5432,"127.0.0.1");s.on("connect",()=>{s.end();process.exit(0)});s.on("error",()=>process.exit(1))'; }
+db_up() { node scripts/db-up.mjs; }
 if ! db_up; then
   command -v docker >/dev/null || die "Не найден Docker. Установите Docker Desktop (https://www.docker.com/products/docker-desktop), запустите его и повторите."
   docker info >/dev/null 2>&1 || die "Docker установлен, но не запущен. Откройте Docker Desktop, дождитесь зелёного значка и повторите."
