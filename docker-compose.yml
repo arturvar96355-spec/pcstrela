@@ -31,7 +31,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000" # только для команд на самом сервере
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/public/health"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/public/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 30s
       retries: 3
 
