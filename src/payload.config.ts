@@ -23,6 +23,8 @@ import { migrations } from './migrations'
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 const smtpConfigured = Boolean(process.env.SMTP_USER && process.env.SMTP_PASS)
+// SMTP любого провайдера: по умолчанию Яндекс, для REG.RU и других задайте SMTP_HOST и SMTP_PORT
+const smtpPort = Number(process.env.SMTP_PORT || 465)
 
 export default buildConfig({
   serverURL: SITE,
@@ -47,9 +49,9 @@ export default buildConfig({
         defaultFromAddress: process.env.SMTP_FROM ?? '',
         defaultFromName: process.env.SMTP_FROM_NAME ?? '',
         transportOptions: {
-          host: 'smtp.yandex.ru',
-          port: 465,
-          secure: true,
+          host: process.env.SMTP_HOST || 'smtp.yandex.ru',
+          port: smtpPort,
+          secure: smtpPort === 465,
           auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
         },
       })
