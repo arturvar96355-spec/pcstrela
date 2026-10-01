@@ -61,8 +61,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-pcstrela.ru}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./gate:/etc/caddy/gate:ro
       - caddy_data:/data
     depends_on:
       - app

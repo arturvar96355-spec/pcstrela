@@ -1,11 +1,15 @@
-# Замените example.ru на ваш домен (единственное место, кроме .env)
-example.ru, www.example.ru {
-  @www host www.example.ru
-  redir @www https://example.ru{uri} permanent
+# Домен берётся из переменной SITE_DOMAIN в .env (по умолчанию pcstrela.ru)
+{$SITE_DOMAIN}, www.{$SITE_DOMAIN} {
+  @www host www.{$SITE_DOMAIN}
+  redir @www https://{$SITE_DOMAIN}{uri} permanent
 
   encode zstd gzip
   header Strict-Transport-Security "max-age=31536000; includeSubDomains"
   request_body max_size 25MB
+
+  # Временный вход на сайт: если в папке gate/ лежит файл *.caddy, сайт закрыт логином и паролем.
+  # Чтобы открыть сайт для всех, удалите gate/gate.caddy и выполните: docker compose restart caddy
+  import /etc/caddy/gate/*.caddy
 
   reverse_proxy app:3000 {
     header_up X-Real-IP {remote_host}
