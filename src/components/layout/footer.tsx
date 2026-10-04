@@ -8,7 +8,7 @@ import { Container } from '@/components/ui/misc'
 export function Footer({ settings, directions }: { settings: SiteSetting; directions: Direction[] }) {
   const year = new Date().getFullYear()
   return (
-    <footer className="mt-20 bg-inverse-bg text-inverse-fg">
+    <footer className="mt-24 border-t-4 border-accent bg-ink text-inverse-fg">
       <Container className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-3 text-sm">
           <p className="font-display text-xl font-bold">{settings.companyName}</p>
@@ -42,7 +42,7 @@ export function Footer({ settings, directions }: { settings: SiteSetting; direct
           <ul className="space-y-2">
             {directions.map((d) => (
               <li key={d.id}>
-                <Link href={`/produkciya/${d.slug}`} className="text-white/80 hover:text-white">
+                <Link href={`/produkciya/${d.slug}`} className="text-white/75 transition-all hover:pl-1 hover:text-accent">
                   {d.title}
                 </Link>
               </li>
@@ -54,24 +54,24 @@ export function Footer({ settings, directions }: { settings: SiteSetting; direct
           <summary className="mb-3 cursor-pointer font-bold lg:cursor-default">Компания</summary>
           <ul className="space-y-2">
             <li>
-              <Link href="/obekty" className="text-white/80 hover:text-white">
+              <Link href="/obekty" className="text-white/75 transition-all hover:pl-1 hover:text-accent">
                 Объекты
               </Link>
             </li>
             {NAV_ABOUT.map((a) => (
               <li key={a.href}>
-                <Link href={a.href} className="text-white/80 hover:text-white">
+                <Link href={a.href} className="text-white/75 transition-all hover:pl-1 hover:text-accent">
                   {a.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link href="/goszakazchikam" className="text-white/80 hover:text-white">
+              <Link href="/goszakazchikam" className="text-white/75 transition-all hover:pl-1 hover:text-accent">
                 Госзаказчикам
               </Link>
             </li>
             <li>
-              <Link href="/kontakty" className="text-white/80 hover:text-white">
+              <Link href="/kontakty" className="text-white/75 transition-all hover:pl-1 hover:text-accent">
                 Контакты
               </Link>
             </li>

@@ -9,14 +9,14 @@ import { MobileNav } from './mobile-nav'
 import { HeaderCta } from './header-cta'
 import { Container } from '@/components/ui/misc'
 
-const linkCls = 'inline-flex min-h-11 items-center px-3 text-sm font-medium hover:bg-muted'
+const linkCls = 'nav-link inline-flex min-h-11 items-center px-3 text-sm font-medium'
 
 export function Header({ settings, directions }: { settings: SiteSetting; directions: Direction[] }) {
   const phone = primaryPhone(settings)
   const logo = imageOf(settings.logo, 'thumb')
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-bg">
+    <header className="site-header sticky top-0 z-30 border-b border-border">
       <Container className="flex h-16 items-center justify-between gap-2">
         <Link href="/" className="flex shrink-0 items-center gap-3" aria-label={settings.companyName}>
           {logo ? (
@@ -34,11 +34,11 @@ export function Header({ settings, directions }: { settings: SiteSetting; direct
             <Link href="/produkciya" className={linkCls}>
               Продукция
             </Link>
-            <div className="invisible absolute left-0 top-full z-40 w-[640px] border border-border bg-bg p-4 opacity-0 shadow-lg transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute left-0 top-full z-40 w-[640px] border border-border bg-bg p-4 translate-y-2 opacity-0 shadow-xl transition duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               <ul className="grid grid-cols-2 gap-x-6 gap-y-1">
                 {directions.map((d) => (
                   <li key={d.id}>
-                    <Link href={`/produkciya/${d.slug}`} className="block rounded-[4px] p-2 hover:bg-muted">
+                    <Link href={`/produkciya/${d.slug}`} className="block rounded-[4px] p-2 transition-colors hover:bg-muted hover:text-accent-dark">
                       <span className="block text-sm font-medium">{d.title}</span>
                       <span className="block text-xs text-muted-fg">{d.shortDescription}</span>
                     </Link>
@@ -54,9 +54,9 @@ export function Header({ settings, directions }: { settings: SiteSetting; direct
             <Link href="/o-kompanii" className={linkCls}>
               О компании
             </Link>
-            <div className="invisible absolute left-0 top-full z-40 w-56 border border-border bg-bg p-2 opacity-0 shadow-lg transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+            <div className="invisible absolute left-0 top-full z-40 w-56 border border-border bg-bg p-2 translate-y-2 opacity-0 shadow-xl transition duration-200 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {NAV_ABOUT.map((a) => (
-                <Link key={a.href} href={a.href} className="block rounded-[4px] px-3 py-2 text-sm hover:bg-muted">
+                <Link key={a.href} href={a.href} className="block rounded-[4px] px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-accent-dark">
                   {a.label}
                 </Link>
               ))}

@@ -19,8 +19,25 @@ export function Badge({ children, className, mono }: { children: ReactNode; clas
   )
 }
 
-export function SectionTitle({ children, as: Tag = 'h2', className }: { children: ReactNode; as?: 'h1' | 'h2' | 'h3'; className?: string }) {
-  return <Tag className={cn('font-display text-2xl font-bold md:text-3xl', className)}>{children}</Tag>
+export function SectionTitle({
+  children,
+  as: Tag = 'h2',
+  className,
+  eyebrow,
+}: {
+  children: ReactNode
+  as?: 'h1' | 'h2' | 'h3'
+  className?: string
+  eyebrow?: string
+}) {
+  const title = <Tag className={cn('font-display text-2xl font-bold tracking-tight md:text-4xl', className)}>{children}</Tag>
+  if (!eyebrow) return title
+  return (
+    <div>
+      <p className="section-eyebrow mb-3">{eyebrow}</p>
+      {title}
+    </div>
+  )
 }
 
 export function Skeleton({ className }: { className?: string }) {

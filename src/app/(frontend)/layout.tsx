@@ -10,6 +10,7 @@ import { Footer } from '@/components/layout/footer'
 import { CookieBanner } from '@/components/layout/cookie-banner'
 import { Metrika } from '@/components/layout/metrika'
 import { JsonLd } from '@/components/layout/json-ld'
+import { ScrollEffects } from '@/components/layout/scroll-effects'
 import { LeadProvider } from '@/components/forms/lead-provider'
 
 // Данные берутся из БД на каждый запрос: сайт не требует доступа к БД при сборке.
@@ -53,8 +54,9 @@ export default async function FrontendLayout({ children }: { children: ReactNode
             directions: directions.map((d) => ({ id: d.id, title: d.title })),
           }}
         >
+          <ScrollEffects />
           <Header settings={settings} directions={directions} />
-          <main>{children}</main>
+          <main className="page-enter">{children}</main>
           <Footer settings={settings} directions={directions} />
           <CookieBanner />
           <Metrika id={settings.metrikaId} />

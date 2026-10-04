@@ -101,7 +101,7 @@ export function LeadButton({
   className,
   variant = 'primary',
   ...opts
-}: LeadOpenOptions & { label: string; className?: string; variant?: 'primary' | 'secondary' | 'ghost' | 'inverse' }) {
+}: LeadOpenOptions & { label: string; className?: string; variant?: 'primary' | 'secondary' | 'ghost' | 'inverse' | 'accent' | 'outline-light' }) {
   const { openLead } = useLead()
   return (
     <Button variant={variant} className={className} onClick={() => openLead(opts)}>

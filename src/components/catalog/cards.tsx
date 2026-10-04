@@ -44,12 +44,12 @@ export function ImageBox({
 
 export function DirectionCard({ d }: { d: Direction }) {
   return (
-    <Link href={`/produkciya/${d.slug}`} className="group block overflow-hidden rounded-[4px] border border-border bg-bg hover:border-fg">
+    <Link href={`/produkciya/${d.slug}`} className="card-lift group block overflow-hidden rounded-[4px] border border-border bg-bg">
       <ImageBox src={imageOf(d.cover, 'card')} fit="cover" />
       <div className="p-4">
         <h3 className="font-display text-lg font-bold">{d.title}</h3>
         <p className="mt-1 text-sm text-muted-fg">{d.shortDescription}</p>
-        <ArrowRight className="mt-3 size-5 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="mt-3 size-5 text-accent transition-transform duration-300 group-hover:translate-x-2" />
       </div>
     </Link>
   )
@@ -57,7 +57,7 @@ export function DirectionCard({ d }: { d: Direction }) {
 
 export function CategoryCard({ c, directionSlug, image }: { c: Category & { productCount: number }; directionSlug: string; image: { url: string; alt: string } | null }) {
   return (
-    <Link href={`/produkciya/${directionSlug}/${c.slug}`} className="group block overflow-hidden rounded-[4px] border border-border hover:border-fg">
+    <Link href={`/produkciya/${directionSlug}/${c.slug}`} className="card-lift group block overflow-hidden rounded-[4px] border border-border bg-bg">
       <ImageBox src={image} />
       <div className="p-4">
         <h3 className="font-display text-lg font-bold">{c.title}</h3>
@@ -73,7 +73,7 @@ export function ProductCard({ p, href }: { p: Product; href: string }) {
   const first = p.gallery?.[0]
   const dims = formatDimensions(p.lengthMm, p.widthMm, p.heightMm)
   return (
-    <article className="flex flex-col overflow-hidden rounded-[4px] border border-border">
+    <article className="card-lift flex flex-col overflow-hidden rounded-[4px] border border-border bg-bg">
       <Link href={href} className="block">
         <ImageBox src={imageOf(first, 'card')} />
       </Link>
@@ -103,7 +103,7 @@ export function ProductCard({ p, href }: { p: Product; href: string }) {
 export function ProjectCard({ p }: { p: Project }) {
   const dirs = (p.directions ?? []).filter((d): d is Direction => typeof d !== 'string')
   return (
-    <Link href={`/obekty/${p.slug}`} className="group block overflow-hidden rounded-[4px] border border-border hover:border-fg">
+    <Link href={`/obekty/${p.slug}`} className="card-lift group block overflow-hidden rounded-[4px] border border-border bg-bg">
       <ImageBox src={imageOf(p.cover, 'card')} ratio="16/10" fit="cover" />
       <div className="space-y-2 p-4">
         <p className="text-sm text-muted-fg">

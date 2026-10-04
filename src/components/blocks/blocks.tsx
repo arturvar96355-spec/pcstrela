@@ -9,19 +9,23 @@ import { ProjectCard } from '@/components/catalog/cards'
 import { LinkButton } from '@/components/ui/button'
 import { Container, SectionTitle } from '@/components/ui/misc'
 import { DownloadLink } from './download-link'
+import { Reveal } from '@/components/ui/reveal'
+import { CountUp } from '@/components/ui/count-up'
 
 export function Facts({ settings }: { settings: SiteSetting }) {
   const facts = settings.facts ?? []
   if (!facts.length) return null
   return (
-    <section className="border-y border-border bg-muted py-10">
+    <section className="bg-grid-dark py-12 text-inverse-fg">
       <Container>
-        <dl className="grid grid-cols-2 gap-6 lg:grid-cols-4">
-          {facts.map((f) => (
-            <div key={f.id ?? f.label}>
-              <dt className="font-display text-4xl font-bold md:text-5xl">{f.value}</dt>
-              <dd className="mt-1 text-sm text-muted-fg">{f.label}</dd>
-            </div>
+        <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+          {facts.map((f, i) => (
+            <Reveal key={f.id ?? f.label} delay={i * 100} className="border-l-2 border-accent pl-4">
+              <dt className="font-display text-4xl font-bold md:text-5xl">
+                <CountUp value={f.value} />
+              </dt>
+              <dd className="mt-1 text-sm text-white/70">{f.label}</dd>
+            </Reveal>
           ))}
         </dl>
       </Container>
@@ -57,7 +61,7 @@ export function DocumentCard({ d }: { d: Document }) {
   const preview = imageOf(d.preview, 'card')
   const valid = formatDate(d.validUntil)
   return (
-    <article className="flex flex-col overflow-hidden rounded-[4px] border border-border">
+    <article className="card-lift flex flex-col overflow-hidden rounded-[4px] border border-border bg-bg">
       <div className="relative aspect-[3/4] w-full bg-muted">
         {preview ? (
           <Image src={preview.url} alt={preview.alt || d.title} fill sizes="(min-width:1024px) 25vw, 50vw" className="object-contain" />
