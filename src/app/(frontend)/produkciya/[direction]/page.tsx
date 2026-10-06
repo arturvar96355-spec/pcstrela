@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { CheckCircle2, Factory } from 'lucide-react'
 import { getCategoriesByDirection, getDirectionBySlug, getDocuments, getProducts, getProjectsByDirection, getSiteSettings } from '@/lib/queries'
@@ -10,6 +11,7 @@ import { CategoryCard, ImageBox } from '@/components/catalog/cards'
 import { DocumentsBlock, ProjectsBlock } from '@/components/blocks/blocks'
 import { Badge, Container, EmptyState, SectionTitle } from '@/components/ui/misc'
 import { InlineLeadForm, LeadButton, PageLeadContext } from '@/components/forms/lead-provider'
+import { Reveal } from '@/components/ui/reveal'
 
 type Params = { direction: string }
 
@@ -43,6 +45,7 @@ export default async function DirectionPage({ params }: { params: Promise<Params
   if (d.type === 'service') {
     const svc = d.service
     const cover = imageOf(d.cover, 'hero')
+    const gallery = (d.gallery ?? []).map((g) => imageOf(g, 'card')).filter((g): g is NonNullable<typeof g> => Boolean(g))
     return (
       <>
         <PageLeadContext type="calculation" direction={dirRef} hint={svc?.formHint ?? undefined} />
@@ -57,6 +60,8 @@ export default async function DirectionPage({ params }: { params: Promise<Params
             {cover ? <ImageBox src={cover} fit="cover" sizes="(min-width:1024px) 50vw, 100vw" priority /> : null}
           </section>
 
+          {hasRichText(d.description) ? <RichText data={d.description} className="mt-12 max-w-3xl" /> : null}
+
           {(svc?.workScope ?? []).length ? (
             <section className="mt-14">
               <SectionTitle>Что делаем</SectionTitle>
@@ -67,6 +72,23 @@ export default async function DirectionPage({ params }: { params: Promise<Params
                   </li>
                 ))}
               </ul>
+            </section>
+          ) : null}
+
+          {gallery.length ? (
+            <section className="mt-14">
+              <Reveal>
+                <SectionTitle eyebrow="Фото">Выполненные изделия</SectionTitle>
+              </Reveal>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {gallery.map((g, i) => (
+                  <Reveal key={g.url} delay={(i % 3) * 90}>
+                    <div className="card-lift relative aspect-[4/3] overflow-hidden rounded-[4px] bg-muted">
+                      <Image src={g.url} alt={g.alt} fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
             </section>
           ) : null}
 
@@ -105,8 +127,6 @@ export default async function DirectionPage({ params }: { params: Promise<Params
           )}
 
           <DocumentsBlock docs={docs} title="Документы и допуски" />
-
-          {hasRichText(d.description) ? <RichText data={d.description} className="mt-14 max-w-3xl" /> : null}
 
           <section className="mt-14 max-w-2xl">
             <SectionTitle>Запросить расчёт</SectionTitle>

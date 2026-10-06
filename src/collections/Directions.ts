@@ -42,6 +42,7 @@ export const Directions: CollectionConfig = {
     { name: 'order', label: 'Порядок', type: 'number', defaultValue: 100, admin: { position: 'sidebar' } },
     { name: 'shortDescription', label: 'Кратко (для плиток)', type: 'textarea', required: true, maxLength: 200 },
     { name: 'cover', label: 'Обложка', type: 'upload', relationTo: 'media' },
+    { name: 'gallery', label: 'Фото (галерея на странице)', type: 'upload', relationTo: 'media', hasMany: true, maxRows: 20 },
     { name: 'heroText', label: 'Подзаголовок первого экрана', type: 'textarea', maxLength: 300 },
     { name: 'description', label: 'Описание', type: 'richText' },
     {

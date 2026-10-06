@@ -15,6 +15,4 @@ export const NAV_ABOUT = [
   { href: '/o-kompanii', label: 'О компании' },
   { href: '/proizvodstvo', label: 'Производство' },
   { href: '/dokumenty', label: 'Документы' },
-  { href: '/dostavka-i-oplata', label: 'Доставка и оплата' },
-  { href: '/garantiya', label: 'Гарантия' },
 ]

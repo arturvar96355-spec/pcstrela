@@ -18,6 +18,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push(u(`/produkciya/${p.direction.slug}/${p.category.slug}/${p.slug}`, p.updatedAt))
   }
   for (const p of d.projects) entries.push(u(`/obekty/${p.slug}`, p.updatedAt))
-  for (const p of d.pages) entries.push(u(`/${p.slug}`, p.updatedAt))
+  for (const p of d.pages) {
+    // пустые страницы отдают 404 и в карту сайта не попадают
+    const filled = Boolean(p.lead) || Boolean((p.content as { root?: { children?: Array<{ children?: unknown[] }> } } | null)?.root?.children?.some((c) => (c.children?.length ?? 0) > 0))
+    if (filled) entries.push(u(`/${p.slug}`, p.updatedAt))
+  }
   return entries
 }

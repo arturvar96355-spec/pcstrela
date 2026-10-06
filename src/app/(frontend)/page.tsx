@@ -57,7 +57,7 @@ export default async function HomePageRoute() {
             </p>
             <div className="anim-fade-up mt-8 flex flex-wrap gap-3" style={{ '--d': '400ms' } as React.CSSProperties}>
               <LinkButton href="/produkciya" variant="accent" className="px-6">
-                Каталог продукции <ArrowRight className="size-4" />
+                Наша продукция <ArrowRight className="size-4" />
               </LinkButton>
               <LeadButton type="callback" label="Запросить КП" variant="outline-light" className="px-6" />
             </div>

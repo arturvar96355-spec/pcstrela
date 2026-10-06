@@ -43,6 +43,8 @@ export default async function ContentPage({ params }: { params: Promise<Params> 
   const cover = imageOf(page.cover, 'hero')
   const gallery = (page.gallery ?? []).map((g) => imageOf(g, 'card')).filter((g): g is NonNullable<typeof g> => Boolean(g))
   const filled = hasRichText(page.content)
+  // пустые страницы не показываем: на сайте не должно быть заглушек «скоро будет заполнено»
+  if (!filled && !page.lead && !(page.gallery ?? []).length) notFound()
 
   // дополнения для госзаказчиков
   const gov = slug === 'goszakazchikam'

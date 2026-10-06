@@ -74,45 +74,19 @@ for (const [name, alt] of Object.entries(IMAGES)) {
 }
 
 // --- направления ---
+// Сайт информационный: все направления — страницы без каталога. Тексты и фото вносит scripts/apply-client-data.ts.
 const DIRECTIONS = [
-  {
-    order: 10, title: 'Малые архитектурные формы', slug: 'maf', type: 'catalog',
-    shortDescription: 'Скамейки, урны и другие изделия для благоустройства дворов, парков и учреждений.',
-    okpd2: '31.01.12',
-  },
-  {
-    order: 20, title: 'Уличная мебель', slug: 'ulichnaya-mebel', type: 'catalog',
-    shortDescription: 'Уличная и складская металлическая мебель, системы хранения, уличные тренажёры.',
-  },
-  {
-    order: 30, title: 'Противопожарные двери', slug: 'protivopozharnye-dveri', type: 'catalog',
-    shortDescription: 'Противопожарные двери собственного производства для зданий и сооружений.',
-  },
-  {
-    order: 40, title: 'Фасадные системы', slug: 'fasadnye-sistemy', type: 'catalog',
-    shortDescription: 'Вентилируемые навесные фасады, металлокассеты, корзины для кондиционеров, козырьки и навесы.',
-  },
-  {
-    order: 50, title: 'Тепловые узлы', slug: 'teplovye-uzly', type: 'service',
-    shortDescription: 'Модульные тепловые узлы: проектирование, изготовление и поставка.',
-  },
-  {
-    order: 60, title: 'Шумозащитные кожухи', slug: 'shumozashchitnye-kozhuhi', type: 'service',
-    shortDescription: 'Шумозащитные кожухи для оборудования любых габаритов.',
-  },
-  {
-    order: 70, title: 'Проектирование котельных', slug: 'proektirovanie-kotelnyh', type: 'service',
-    shortDescription: 'Проектирование котельных узлов и производство теплового оборудования.',
-  },
+  { order: 10, title: 'Фасадные кассеты', slug: 'fasadnye-sistemy', type: 'service', shortDescription: 'Кассеты закрытого и открытого типа крепления для вентилируемых фасадов зданий и сооружений.' },
+  { order: 20, title: 'Противопожарные двери', slug: 'protivopozharnye-dveri', type: 'service', shortDescription: 'Двери стальные противопожарные дымогазонепроницаемые, однопольные и двупольные.' },
+  { order: 30, title: 'Шумоизоляционные боксы', slug: 'shumozashchitnye-kozhuhi', type: 'service', shortDescription: 'Короба для снижения уровня шума от работающего оборудования, изготавливаются индивидуально.' },
+  { order: 40, title: 'Металлические ограждения', slug: 'ograzhdeniya', type: 'service', shortDescription: 'Ограждения из металла, в том числе ограждения детских площадок.' },
+  { order: 50, title: 'Малые архитектурные формы', slug: 'maf', type: 'service', shortDescription: 'Скамейки, урны, навесы, беседки и другие изделия для благоустройства.' },
 ] as const
 
 const COVERS: Record<string, string> = {
   maf: 'maf-bench',
-  'ulichnaya-mebel': 'pergola',
   'fasadnye-sistemy': 'facade',
-  'teplovye-uzly': 'heat-unit-1',
   'shumozashchitnye-kozhuhi': 'noise-casing',
-  'proektirovanie-kotelnyh': 'heat-unit-2',
 }
 const dir: Record<string, string> = {}
 for (const d of DIRECTIONS) {
@@ -127,51 +101,7 @@ for (const d of DIRECTIONS) {
   }
 }
 
-// --- категории и наборы характеристик ---
-type Attr = { key: string; label: string; unit?: string; required?: boolean }
-const CATEGORIES: Array<{ title: string; slug: string; direction: string; order: number; okpd2?: string; attributeSet: Attr[] }> = [
-  {
-    title: 'Скамейки', slug: 'skamejki', direction: 'maf', order: 10, okpd2: '31.01.12',
-    attributeSet: [
-      { key: 'seats_count', label: 'Посадочных мест', unit: 'шт', required: true },
-      { key: 'has_backrest', label: 'Спинка', required: true },
-      { key: 'wood_species', label: 'Порода дерева' },
-      { key: 'mounting', label: 'Способ установки', required: true },
-    ],
-  },
-  {
-    title: 'Урны', slug: 'urny', direction: 'maf', order: 20, okpd2: '25.99',
-    attributeSet: [
-      { key: 'volume', label: 'Объём', unit: 'л', required: true },
-      { key: 'has_liner', label: 'Вкладыш' },
-    ],
-  },
-  {
-    title: 'Навесы и перголы', slug: 'navesy-i-pergoly', direction: 'maf', order: 30,
-    attributeSet: [
-      { key: 'area', label: 'Площадь', unit: 'м²', required: true },
-      { key: 'roof_material', label: 'Материал кровли' },
-    ],
-  },
-  { title: 'Столы', slug: 'stoly', direction: 'ulichnaya-mebel', order: 10, attributeSet: [] },
-  {
-    title: 'Двери стальные противопожарные', slug: 'dveri-protivopozharnye', direction: 'protivopozharnye-dveri', order: 10,
-    attributeSet: [
-      { key: 'leaves', label: 'Количество створок' },
-      { key: 'glazing', label: 'Остекление' },
-    ],
-  },
-  {
-    title: 'Кассеты фасадные', slug: 'kassety-fasadnye', direction: 'fasadnye-sistemy', order: 10,
-    attributeSet: [
-      { key: 'steel_thickness', label: 'Толщина стали', unit: 'мм' },
-      { key: 'fastening', label: 'Тип крепления' },
-    ],
-  },
-]
-for (const c of CATEGORIES) {
-  await ensure('categories', { slug: { equals: c.slug } }, { ...c, direction: dir[c.direction] })
-}
+// Каталога изделий нет: категории и товары не создаются (сайт информационный).
 
 // --- страницы (тексты вносятся через админку) ---
 for (const p of PAGE_SLUGS) {
@@ -297,7 +227,7 @@ for (const pr of PROJECTS) {
       summary: pr.summary,
       customerName: pr.customer,
       showCustomer: false,
-      directions: (pr.directions ?? []).map((d) => dir[d]),
+      directions: (pr.directions ?? []).map((d) => dir[d]).filter(Boolean),
       _status: 'draft',
     } as never,
   })

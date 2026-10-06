@@ -279,6 +279,7 @@ export interface Direction {
   order?: number | null;
   shortDescription: string;
   cover?: (string | null) | Media;
+  gallery?: (string | Media)[] | null;
   heroText?: string | null;
   description?: {
     root: {
@@ -803,6 +804,7 @@ export interface DirectionsSelect<T extends boolean = true> {
   order?: T;
   shortDescription?: T;
   cover?: T;
+  gallery?: T;
   heroText?: T;
   description?: T;
   okpd2?: T;
