@@ -318,6 +318,33 @@ if (!(await findOne('projects', { slug: { equals: 'detskij-sad-majdarovo' } })))
   }
 }
 
+// ---------- объект: стеллажи Госфильмофонда ----------
+if (!(await findOne('projects', { slug: { equals: 'stellazhi-gosfilmofonda' } }))) {
+  const photos = [
+    await photo(C('gosfilmofond-1'), 'Стеллажи для хранения киноплёнки: ряды стоек с держателями'),
+    await photo(C('gosfilmofond-2'), 'Стеллажи для хранения киноплёнки, вид вдоль ряда'),
+  ]
+  await payload.create({
+    collection: 'projects',
+    overrideAccess: true,
+    context: ctx,
+    data: {
+      title: 'Стеллажи для хранения киноплёнки, Госфильмофонд',
+      slug: 'stellazhi-gosfilmofonda',
+      city: 'г. Домодедово, п. Госфильмофонда, 5',
+      year: 2025,
+      customerName: 'ЗАО «МНК ГРУПП»',
+      showCustomer: true,
+      summary: 'Стеллажи для хранения плёнок с фильмами Госфильмофонда.',
+      cover: photos[0],
+      gallery: photos,
+      description: rich(p('Изготовили стеллажи для хранения плёнок с фильмами Госфильмофонда (г. Домодедово, посёлок Госфильмофонда, 5) в 2025 году.')),
+      _status: 'published',
+    } as never,
+  })
+  log('создан объект «Стеллажи для хранения киноплёнки, Госфильмофонд»')
+}
+
 // ---------- сертификаты ----------
 async function certificate(o: { number: string; title: string; file: string; preview: string; fileTitle: string; previewAlt: string; issued: string; until: string; direction: string }) {
   if (await findOne('documents', { number: { equals: o.number } })) return
