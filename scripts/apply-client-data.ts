@@ -5,6 +5,7 @@ import { getPayload } from 'payload'
 import fs from 'node:fs'
 import path from 'node:path'
 import config from '../src/payload.config'
+import { slugify } from '../src/hooks/slug'
 
 const payload = await getPayload({ config })
 const ctx = { disableRevalidate: true }
@@ -278,6 +279,43 @@ if (!(await findOne('projects', { slug: { equals: 'detskij-sad-majdarovo' } })))
     } as never,
   })
   log('создан объект «Детский сад, пос. Майдарово»')
+}
+
+// ---------- объект: школа № 11, Павловский Посад ----------
+// Тот же объект есть в черновиках из презентации («...Большие Дворы (МОУ СОШ № 11)»): обновляем его, чтобы не было дубля.
+{
+  const NEW_SLUG = 'shkola-11-pavlovskij-posad'
+  const photos = [
+    await photo(C('pavlovskij-posad-1'), 'Школа № 11 в Павловском Посаде: фасад из цветных кассет'),
+    await photo(C('pavlovskij-posad-2'), 'Школа № 11 в Павловском Посаде: главный вход и фасад'),
+    await photo(C('pavlovskij-posad-3'), 'Школа № 11 в Павловском Посаде: общий вид зданий'),
+  ]
+  const data = {
+    title: 'Школа № 11, г. Павловский Посад',
+    slug: NEW_SLUG,
+    city: 'г. Павловский Посад, ул. Спортивная, д. 12',
+    year: 2024,
+    customerName: 'ЗАО «МНК ГРУПП»',
+    showCustomer: true,
+    summary: 'Фасад площадью 3000 м² (МОУ СОШ № 11).',
+    directions: [dirId['fasadnye-sistemy']],
+    cover: photos[0],
+    gallery: photos,
+    description: rich(p('Для МОУ СОШ № 11 в городе Павловский Посад (ул. Спортивная, д. 12) в 2024 году выполнили фасад площадью 3000 м².')),
+    featured: true,
+    _status: 'published',
+  }
+  const already = await findOne('projects', { slug: { equals: NEW_SLUG } })
+  if (!already) {
+    const draft = await findOne('projects', { slug: { equals: slugify('Капитальный ремонт школы в р.п. Большие Дворы (МОУ СОШ № 11)') } })
+    if (draft) {
+      await payload.update({ collection: 'projects', id: draft.id, data: data as never, overrideAccess: true, context: ctx })
+      log('черновик по школе № 11 обновлён и опубликован')
+    } else {
+      await payload.create({ collection: 'projects', data: data as never, overrideAccess: true, context: ctx })
+      log('создан объект «Школа № 11, г. Павловский Посад»')
+    }
+  }
 }
 
 // ---------- сертификаты ----------
