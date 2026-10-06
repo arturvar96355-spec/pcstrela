@@ -102,7 +102,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
           <div className="lg:col-span-5">
             <Badge mono>{p.sku}</Badge>
-            <h1 className="mt-3 font-display text-3xl font-bold">{p.title}</h1>
+            <h1 className="page-title mt-3 font-display text-3xl font-bold md:text-4xl">{p.title}</h1>
             {p.shortDescription ? <p className="mt-3 text-muted-fg">{p.shortDescription}</p> : null}
 
             <ul className="mt-5 space-y-2 text-sm">
@@ -127,6 +127,20 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 </li>
               ) : null}
             </ul>
+
+            {rows.filter(([k]) => k !== 'Артикул').length ? (
+              <dl className="mt-6 grid gap-x-6 gap-y-3 border-l-2 border-accent pl-4 text-sm sm:grid-cols-2">
+                {rows
+                  .filter(([k]) => k !== 'Артикул')
+                  .slice(0, 4)
+                  .map(([k, v]) => (
+                    <div key={k}>
+                      <dt className="text-xs uppercase tracking-wide text-muted-fg">{k}</dt>
+                      <dd className="mt-0.5 font-medium">{v}</dd>
+                    </div>
+                  ))}
+              </dl>
+            ) : null}
 
             {p.inGispRegistry ? (
               <p className="mt-4 flex items-start gap-2 rounded-[4px] border border-border bg-muted p-3 text-sm">

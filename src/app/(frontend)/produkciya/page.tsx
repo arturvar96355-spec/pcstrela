@@ -28,7 +28,7 @@ export default async function ProductionPage() {
     <>
       <Breadcrumbs items={[{ name: 'Продукция', path: '/produkciya' }]} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">Продукция и услуги</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">Продукция и услуги</h1>
         {catalog.length ? (
           <section className="mt-8">
             <SectionTitle>Изделия</SectionTitle>

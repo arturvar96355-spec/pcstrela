@@ -26,7 +26,7 @@ export default async function DocumentsPage() {
     <>
       <Breadcrumbs items={[{ name: 'Документы', path: '/dokumenty' }]} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">Документы и сертификаты</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">Документы и сертификаты</h1>
         {groups.length ? (
           groups.map((g) => (
             <section key={g.type} className="mt-10">

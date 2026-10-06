@@ -50,7 +50,7 @@ export default async function DirectionPage({ params }: { params: Promise<Params
         <Container className="py-8">
           <section className="grid items-center gap-8 lg:grid-cols-2">
             <div>
-              <h1 className="font-display text-3xl font-bold md:text-5xl">{d.title}</h1>
+              <h1 className="page-title font-display text-3xl font-bold md:text-5xl">{d.title}</h1>
               <p className="mt-4 text-lg text-muted-fg">{d.heroText || d.shortDescription}</p>
               <LeadButton type="calculation" direction={dirRef} hint={svc?.formHint ?? undefined} label="Запросить расчёт" className="mt-6" />
             </div>
@@ -135,7 +135,7 @@ export default async function DirectionPage({ params }: { params: Promise<Params
       <PageLeadContext type="quote" direction={dirRef} />
       <Breadcrumbs items={crumbs} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">{d.title}</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">{d.title}</h1>
         {d.heroText ? <p className="mt-3 max-w-3xl text-muted-fg">{d.heroText}</p> : null}
 
         {categories.length ? (

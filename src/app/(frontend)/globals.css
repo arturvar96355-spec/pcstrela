@@ -106,7 +106,21 @@ html[data-scrolled] .site-header > div { height: 56px; }
 .pulse-ring { animation: pulse-ring 2s ease-out infinite; }
 .float-y { animation: float-y 6s ease-in-out infinite; }
 
+/* заголовки внутренних страниц */
+.page-title { position: relative; padding-bottom: 16px; letter-spacing: -0.015em; animation: fade-up .7s cubic-bezier(.2,.7,.2,1) both; }
+.page-title::after { content: ""; position: absolute; left: 0; bottom: 0; width: 72px; height: 4px; background: var(--color-accent); transform-origin: left; animation: draw-line .8s cubic-bezier(.2,.7,.2,1) .25s both; }
+
+/* появление карточек при прокрутке (где браузер умеет; иначе просто видны) */
+@keyframes card-in { from { opacity: 0; translate: 0 32px; } to { opacity: 1; translate: 0 0; } }
+@supports (animation-timeline: view()) {
+  .card-lift:not([data-reveal] *) { animation: card-in linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+}
+
+/* поля форм: акцентная рамка в фокусе */
+input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+
 @media (prefers-reduced-motion: reduce) {
+  .card-lift { animation: none !important; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   [data-reveal="pending"] { opacity: 1; transform: none; }

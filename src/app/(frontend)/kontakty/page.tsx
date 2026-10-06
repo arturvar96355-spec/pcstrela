@@ -22,7 +22,7 @@ export default async function ContactsPage() {
     <>
       <Breadcrumbs items={[{ name: 'Контакты', path: '/kontakty' }]} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">Контакты</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">Контакты</h1>
         <div className="mt-8 grid gap-10 lg:grid-cols-2">
           <div className="space-y-4">
             {(s.phones ?? []).map((p) => (

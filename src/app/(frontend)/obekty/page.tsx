@@ -39,7 +39,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
     <>
       <Breadcrumbs items={[{ name: 'Объекты', path: '/obekty' }]} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">Объекты</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">Объекты</h1>
 
         {all.totalDocs === 0 ? (
           <div className="mt-8">

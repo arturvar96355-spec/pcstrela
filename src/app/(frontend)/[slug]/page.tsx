@@ -56,7 +56,7 @@ export default async function ContentPage({ params }: { params: Promise<Params> 
       <Breadcrumbs items={[{ name: page.title, path: `/${page.slug}` }]} />
       <Container className="py-8">
         <div className="max-w-3xl">
-          <h1 className="font-display text-3xl font-bold md:text-4xl">{page.title}</h1>
+          <h1 className="page-title font-display text-3xl font-bold md:text-5xl">{page.title}</h1>
           {page.lead ? <p className="mt-4 text-lg text-muted-fg">{page.lead}</p> : null}
           {slug === 'garantiya' && settings.warrantyShort ? (
             <p className="mt-6 rounded-[4px] border border-border bg-muted p-4 font-medium">{settings.warrantyShort}</p>

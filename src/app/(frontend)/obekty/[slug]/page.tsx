@@ -41,7 +41,7 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
     <>
       <Breadcrumbs items={[{ name: 'Объекты', path: '/obekty' }, { name: p.title, path: `/obekty/${p.slug}` }]} />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">{p.title}</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">{p.title}</h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-fg">
           <span className="flex items-center gap-1">
             <MapPin className="size-4" /> {p.city}

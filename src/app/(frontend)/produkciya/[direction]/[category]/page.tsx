@@ -67,7 +67,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
         ]}
       />
       <Container className="py-8">
-        <h1 className="font-display text-3xl font-bold md:text-4xl">{c.title}</h1>
+        <h1 className="page-title font-display text-3xl font-bold md:text-5xl">{c.title}</h1>
         {c.shortDescription ? <p className="mt-3 max-w-3xl text-muted-fg">{c.shortDescription}</p> : null}
         <p className="mt-2 text-sm text-muted-fg">
           {res.totalDocs} {pluralize(res.totalDocs, 'модель', 'модели', 'моделей')}
