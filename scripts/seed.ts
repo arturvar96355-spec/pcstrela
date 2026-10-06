@@ -89,7 +89,7 @@ const DIRECTIONS = [
     shortDescription: 'Противопожарные двери собственного производства для зданий и сооружений.',
   },
   {
-    order: 40, title: 'Фасадные системы', slug: 'fasadnye-sistemy', type: 'service',
+    order: 40, title: 'Фасадные системы', slug: 'fasadnye-sistemy', type: 'catalog',
     shortDescription: 'Вентилируемые навесные фасады, металлокассеты, корзины для кондиционеров, козырьки и навесы.',
   },
   {
@@ -118,6 +118,9 @@ const dir: Record<string, string> = {}
 for (const d of DIRECTIONS) {
   const doc = await ensure('directions', { slug: { equals: d.slug } }, d)
   dir[d.slug] = doc.id as string
+  if ((doc as { type?: string }).type !== d.type) {
+    await payload.update({ collection: 'directions', id: doc.id, data: { type: d.type }, overrideAccess: true, context: ctx })
+  }
   const cover = media[COVERS[d.slug]]
   if (cover && !doc.cover) {
     await payload.update({ collection: 'directions', id: doc.id, data: { cover }, overrideAccess: true, context: ctx })
@@ -152,12 +155,17 @@ const CATEGORIES: Array<{ title: string; slug: string; direction: string; order:
   },
   { title: 'Столы', slug: 'stoly', direction: 'ulichnaya-mebel', order: 10, attributeSet: [] },
   {
-    title: 'Двери EI 60', slug: 'dveri-ei-60', direction: 'protivopozharnye-dveri', order: 10,
+    title: 'Двери стальные противопожарные', slug: 'dveri-protivopozharnye', direction: 'protivopozharnye-dveri', order: 10,
     attributeSet: [
-      { key: 'fire_rating', label: 'Предел огнестойкости', required: true },
-      { key: 'leaves', label: 'Количество створок', unit: 'шт', required: true },
-      { key: 'certificate', label: 'Сертификат ТР ЕАЭС 043/2017' },
-      { key: 'hardware', label: 'Комплектация' },
+      { key: 'leaves', label: 'Количество створок' },
+      { key: 'glazing', label: 'Остекление' },
+    ],
+  },
+  {
+    title: 'Кассеты фасадные', slug: 'kassety-fasadnye', direction: 'fasadnye-sistemy', order: 10,
+    attributeSet: [
+      { key: 'steel_thickness', label: 'Толщина стали', unit: 'мм' },
+      { key: 'fastening', label: 'Тип крепления' },
     ],
   },
 ]
