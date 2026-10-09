@@ -125,3 +125,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   [data-reveal="pending"] { opacity: 1; transform: none; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { display: none; }
+}

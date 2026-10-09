@@ -40,19 +40,31 @@ export default async function HomePageRoute() {
 
   return (
     <>
-      <section className="bg-grid-dark relative overflow-hidden text-inverse-fg">
-        {/* крупная стрела на фоне */}
-        <svg aria-hidden viewBox="0 0 400 400" className="float-y pointer-events-none absolute -right-24 -top-16 hidden h-[560px] w-[560px] text-accent opacity-[0.12] lg:block">
-          <path d="M40 360 L320 80 M320 80 H170 M320 80 V230" fill="none" stroke="currentColor" strokeWidth="26" strokeLinecap="square" />
-        </svg>
+      <section className="relative overflow-hidden bg-ink text-inverse-fg" style={hero ? { backgroundImage: `url(${hero.url})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}>
+        {/* видео работы станка на фоне; при выключенной анимации в системе остаётся кадр-заставка */}
+        <video
+          className="hero-video absolute inset-0 size-full object-cover"
+          poster={hero?.url}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden
+        >
+          <source src="/video/hero.webm" type="video/webm" />
+          <source src="/video/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/10" aria-hidden />
+        <div className="bg-grid-dark absolute inset-0 opacity-30 mix-blend-overlay" aria-hidden />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent" />
-        <Container className="relative grid items-center gap-10 py-14 md:py-20 lg:grid-cols-[1.05fr_1fr] lg:py-24">
-          <div>
+        <Container className="relative py-20 md:py-28 lg:py-36">
+          <div className="max-w-3xl">
             <p className="section-eyebrow anim-fade-up">Производитель металлоконструкций</p>
             <h1 className="anim-fade-up mt-5 break-words font-display text-[28px] font-bold leading-[1.1] tracking-tight sm:text-4xl md:text-6xl" style={{ '--d': '120ms' } as React.CSSProperties}>
               {home.heroTitle}
             </h1>
-            <p className="anim-fade-up mt-6 max-w-xl text-lg text-white/75" style={{ '--d': '260ms' } as React.CSSProperties}>
+            <p className="anim-fade-up mt-6 max-w-xl text-lg text-white/80" style={{ '--d': '260ms' } as React.CSSProperties}>
               {home.heroSubtitle}
             </p>
             <div className="anim-fade-up mt-8 flex flex-wrap gap-3" style={{ '--d': '400ms' } as React.CSSProperties}>
@@ -62,7 +74,7 @@ export default async function HomePageRoute() {
               <LeadButton type="callback" label="Запросить КП" variant="outline-light" className="px-6" />
             </div>
             {phone ? (
-              <p className="anim-fade-up mt-8 flex items-center gap-3 text-sm text-white/70" style={{ '--d': '520ms' } as React.CSSProperties}>
+              <p className="anim-fade-up mt-8 flex items-center gap-3 text-sm text-white/75" style={{ '--d': '520ms' } as React.CSSProperties}>
                 <span className="pulse-ring size-2.5 rounded-full bg-accent" aria-hidden />
                 Звоните:
                 <TrackedLink href={phone.href} goal="click_phone" className="font-display text-lg font-bold text-white">
@@ -71,14 +83,6 @@ export default async function HomePageRoute() {
               </p>
             ) : null}
           </div>
-          {hero ? (
-            <div className="anim-slide-right relative" style={{ '--d': '300ms' } as React.CSSProperties}>
-              <div className="absolute -bottom-4 -left-4 hidden size-full border-2 border-accent md:block" aria-hidden />
-              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-                <Image src={hero.url} alt={hero.alt} fill priority sizes="(min-width:1024px) 50vw, 100vw" className="object-cover" />
-              </div>
-            </div>
-          ) : null}
         </Container>
 
         {directions.length ? (

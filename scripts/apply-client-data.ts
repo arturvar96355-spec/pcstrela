@@ -79,6 +79,7 @@ const img = {
   press: await photo(C('press-vartek'), 'Гидравлический листогибочный пресс Vartek'),
   kamery: await photo(C('kamery-pokraski'), 'Камеры порошковой окраски'),
   zdanie: await photo(C('zdanie-proizvodstva'), 'Производственное здание'),
+  heroPoster: await photo(C('hero-poster'), 'Лазерная резка металла на станке'),
 }
 const stock = async (alt: string) => (await findOne('media', { alt: { equals: alt } }))?.id
 const stockBench = await stock('Скамейка с деревянным сиденьем на стальном каркасе')
@@ -397,7 +398,7 @@ await payload.updateGlobal({
   overrideAccess: true,
   context: ctx,
   data: {
-    heroImage: img.fasad1,
+    heroImage: img.heroPoster, // кадр-заставка для видео на главной (public/video/hero.mp4)
     heroTitle: 'Фасадные кассеты, противопожарные двери и металлоконструкции',
     heroSubtitle:
       'Собственное производство в Курске: лазерная резка, гибка, сварка и порошковая окраска. Шумоизоляционные боксы, металлические ограждения и малые архитектурные формы.',
