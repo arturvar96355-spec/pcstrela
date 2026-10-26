@@ -68,14 +68,17 @@ ENV
   chmod 600 .env
 fi
 
+# Пока сайт не открыт для публики, он закрыт от поисковиков (заголовок noindex).
+# Чтобы дополнительно закрыть его логином и паролем, запустите так: GATE_USER=логин GATE_PASS=пароль bash scripts/server-setup.sh
+# Открыть сайт для поисковиков: bash scripts/open-site.sh
 if [ ! -f gate/gate.caddy ]; then
-  say "Временный вход на весь сайт (пока сайт не готов для публики)"
-  read -r -p "Логин для входа на сайт: " GATE_USER
-  read -r -s -p "Пароль для входа на сайт: " GATE_PASS; echo
-  [ -n "$GATE_USER" ] && [ -n "$GATE_PASS" ] || die "Логин и пароль не должны быть пустыми."
-  HASH=$(docker run --rm caddy:2-alpine caddy hash-password --plaintext "$GATE_PASS")
   mkdir -p gate
-  printf 'basic_auth {\n\t%s %s\n}\nheader X-Robots-Tag "noindex, nofollow"\n' "$GATE_USER" "$HASH" > gate/gate.caddy
+  if [ -n "${GATE_USER:-}" ] && [ -n "${GATE_PASS:-}" ]; then
+    HASH=$(docker run --rm caddy:2-alpine caddy hash-password --plaintext "$GATE_PASS")
+    printf 'basic_auth {\n\t%s %s\n}\nheader X-Robots-Tag "noindex, nofollow"\n' "$GATE_USER" "$HASH" > gate/gate.caddy
+  else
+    printf 'header X-Robots-Tag "noindex, nofollow"\n' > gate/gate.caddy
+  fi
 fi
 
 say "Собираю и запускаю сайт (первый раз 5–15 минут)"
@@ -85,5 +88,5 @@ say "Загружаю начальные данные"
 docker compose --profile tools run --rm --build seed
 
 say "Готово"
-echo "Проверьте: https://$DOMAIN (попросит логин и пароль входа на сайт), админка: https://$DOMAIN/admin"
+echo "Проверьте: https://$DOMAIN , админка: https://$DOMAIN/admin"
 echo "Состояние: docker compose ps | Логи: docker compose logs app --tail 100"
